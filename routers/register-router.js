@@ -3,20 +3,18 @@ const bc = require("bcryptjs");
 
 const Users = require("./users-model");
 
-router.post("/register", (req, res) => {
-  // let user = req.body;
+router.post("/", (req, res) => {
+  let credentials = req.body;
+  const hash = bc.hashSync(credentials.password, 8);
+  credentials.password = hash;
 
-  // const hash = bc.hashSync(req.body.password, 8);
-
-  // user.password = hash;
-
-  // Users.add(user)
-  //     .then(saved => {
-  //         res.status(201).json(saved);
-  //     })
-  //     .catch(error => {
-  //         res.status(500).json(error);
-  //     });
+  Users.add(credentials)
+      .then(savedUser => {
+          res.status(201).json(savedUser);
+      })
+      .catch(error => {
+          res.status(500).json(error);
+      });
 });
 
 module.exports = router;

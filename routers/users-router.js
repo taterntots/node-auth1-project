@@ -1,14 +1,15 @@
 const router = require("express").Router();
-const bc = require("bcryptjs");
 
 const Users = require("./users-model");
 
 router.get('/', (req, res) => {
-  // Users.find()
-  //   .then(users => {
-  //     res.json(users);
-  //   })
-  //   .catch(err => res.send(err));
+  Users.find()
+    .then(users => {
+      res.status(200).json(users);
+    })
+    .catch(err => {
+      res.status(500).json({ errorMessage: 'You shall not pass!' })
+    })
 });
 
 module.exports = router;
