@@ -2,6 +2,7 @@ const express = require('express'); //importing a CommonJS module
 const helmet = require('helmet'); //yarn add helmet
 const session = require('express-session'); //imports the session support module
 const loginRouter = require('../routers/login-router');
+const logoutRouter = require('../routers/logout-router');
 const registerRouter = require('../routers/register-router');
 const usersRouter = require('../routers/users-router');
 const server = express(); //creates the server
@@ -33,5 +34,6 @@ server.get('/', (req, res) => {
 server.use('/api/login', loginRouter);
 server.use('/api/register', registerRouter);
 server.use('/api/users', usersRouter);
+server.use('/api/logout', logoutRouter);
 
 module.exports = server
