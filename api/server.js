@@ -1,6 +1,8 @@
 const express = require('express'); //importing a CommonJS module
 const helmet = require('helmet'); //yarn add helmet
 const session = require('express-session'); //imports the session support module
+const KnexSessionStore = require("connect-session-knex")(session); //needed to store session outside of memory
+const dbConnection = require("../data/dbConfig.js");
 const loginRouter = require('../routers/login-router');
 const logoutRouter = require('../routers/logout-router');
 const registerRouter = require('../routers/register-router');
@@ -17,7 +19,14 @@ const sessionConfig = {
     httpOnly: true //JS cannot access the cookies on the browser
   },
   resave: false,
-  saveUninitialized: true //read about it for GDPR compliance
+  saveUninitialized: true, //read about it for GDPR compliance
+  store: new KnexSessionStore({
+    knex: dbConnection,
+    tablename: "sessions",
+    sidfieldname: "sid",
+    createtable: true,
+    clearInterval: 60000,
+  })
 }
 
 //global middleware
